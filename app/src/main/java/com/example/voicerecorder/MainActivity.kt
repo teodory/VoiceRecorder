@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 //        val path = System.getProperty("user.dir")
 //        println(pat)
 //        testFileWriting()
-
+//        testReadingFiles()
     }
 
     private fun startPlay() {
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 //        player?.setOnCompletionListener (this)
 
         try {
-            file = File(getRecordingDir() + File.separator + "test" + ".mp3")
+            file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
             player?.setDataSource(file.absolutePath)
         } catch (e: IOException) {
         }
@@ -134,8 +134,8 @@ class MainActivity : AppCompatActivity() {
 
         try {
 
-//            file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
-            file = File(getRecordingDir() + File.separator + "test" + ".mp3")
+            file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
+//            file = File(getRecordingDir() + File.separator + "test" + ".mp3")
             file.createNewFile()
 
         } catch (e: IOException) {

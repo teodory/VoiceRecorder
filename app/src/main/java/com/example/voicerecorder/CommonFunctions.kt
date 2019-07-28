@@ -2,6 +2,9 @@ package com.example.voicerecorder
 
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
+
+var RECORD_EXTENSION = "mp3"
 
 
 fun getDate(): String {
@@ -29,7 +32,67 @@ fun getRecordingDir() : String{
     return recordingDir.absolutePath
 }
 
-private fun testFileWriting() {
+
+fun getAllRecords() : List<Record>{
+    var allRecords = ArrayList<Record>()
+
+    var recordsDir = File(getRecordingDir())
+
+    recordsDir.walkTopDown().forEach {
+
+        if(it.extension == RECORD_EXTENSION){
+
+            val recName = generateName(it.nameWithoutExtension)
+            if(recName != null){
+                allRecords.add(Record(name = recName, title = recName, year = 0))
+            }
+        }
+
+    }
+    println(allRecords)
+    return allRecords
+}
+
+fun generateName(name: String): String? {
+//        2019_06_28-05h15m01s
+    val nameRegex = Regex("(\\d{4})_(\\d{2})_(\\d{2})-(\\d{2})h(\\d{2})m(\\d{2})s")
+//"""(\w+?)(?<num>\d+)""".toRegex().matchEntire("area51")!!.groups["num"]!!.value
+    val matches = nameRegex.matchEntire(name)
+    if (matches != null) {
+        print(matches.groups[1]?.value)
+        var str = String.format("Rec %s-%s-%s %s:%s.%s",
+            matches.groups[1]?.value,
+            matches.groups[2]?.value,
+            matches.groups[3]?.value,
+            matches.groups[4]?.value,
+            matches.groups[5]?.value,
+            matches.groups[6]?.value)
+
+        println("----------" + str)
+        return str
+    }
+    return null
+}
+
+
+fun testReadingFiles(){
+    println("-------- IN TEST READING --------")
+    var file = File(getRecordingDir())
+
+    file.walkTopDown().forEach {
+
+        println(it)
+        println(it.extension)
+        println(it.nameWithoutExtension)
+    }
+
+
+    println("-------- EXIT TEST READING --------")
+
+}
+
+
+fun testFileWriting() {
     println("\n\nIN TEST\n\n")
 
 //        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath()
