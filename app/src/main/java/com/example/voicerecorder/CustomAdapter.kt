@@ -21,18 +21,23 @@ class CustomAdapter(var records: List<Record>) : RecyclerView.Adapter<CustomAdap
         return records.size
     }
 
-    override fun onBindViewHolder(holder: CustomAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomAdapter. ViewHolder, position: Int) {
         val record : Record = records[position]
         holder.title.text = record.name
 
         holder.playButton.setOnClickListener{
-            startPlay(record.title)
+            startPlay(record.path)
+        }
+
+        holder.stopButton.setOnClickListener{
+            stopPlayer()
         }
     }
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val title = itemView.findViewById<TextView>(R.id.list_title)
         var playButton = itemView.findViewById<Button>(R.id.myPlayRecord)
+        var stopButton = itemView.findViewById<Button>(R.id.myStropPlayRec)
 //        val description = itemView.findViewById<TextView>(R.id.list_description)
 
     }

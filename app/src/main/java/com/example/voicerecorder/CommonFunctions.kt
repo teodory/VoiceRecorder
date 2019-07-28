@@ -10,7 +10,7 @@ var RECORD_EXTENSION = "mp3"
 fun getDate(): String {
     val t = Calendar.getInstance()
 
-    var dateStr = String.format("%d_%02d_%02d-%02dh%02dm%02ds",
+    return String.format("%d_%02d_%02d-%02dh%02dm%02ds",
         t.get(Calendar.YEAR),
         t.get(Calendar.MONTH),
         t.get(Calendar.DAY_OF_MONTH),
@@ -18,7 +18,6 @@ fun getDate(): String {
         t.get(Calendar.MINUTE),
         t.get(Calendar.SECOND)
     )
-    return dateStr
 }
 
 fun getRecordingDir() : String{
@@ -44,12 +43,11 @@ fun getAllRecords() : List<Record>{
 
             val recName = generateName(it.nameWithoutExtension)
             if(recName != null){
-                allRecords.add(Record(name = recName, title = it.absolutePath, year = 0))
+                allRecords.add(Record(name = recName, path = it.absolutePath))
             }
         }
-
     }
-    println(allRecords)
+
     return allRecords
 }
 

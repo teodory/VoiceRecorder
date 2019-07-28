@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        println(System.getProperty("user.dir"))
-
         var buttonList = findViewById<Button>(R.id.view_my_list_button)
         var buttonStopRecord = findViewById<Button>(R.id.stop_record)
         var buttonStartRecord = findViewById<Button>(R.id.start_record)
@@ -66,30 +64,17 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        val path = System.getProperty("user.dir")
-//        println(pat)
+//        println(path)
 //        testFileWriting()
 //        testReadingFiles()
     }
 
-    private fun startPlay() {
-        player = MediaPlayer ()
+    private fun checkPermisions(): Boolean {
 
-//        player?.setOnCompletionListener (this)
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
 
-        try {
-            file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
-            player?.setDataSource(file.absolutePath)
-        } catch (e: IOException) {
-        }
-
-        try {
-            player?.prepare ()
-        } catch (e: IOException) {
-        }
-
-        player?.start()
-
-//        tv1.text = "Ready to play"
     }
 
     private fun getPermisions() {
@@ -101,39 +86,9 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, permissions,0)
     }
 
-
-    private fun setupMediaRecorder() {
-
-        val path = System.getProperty("user.dir")
-
-//        output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
-        output = System.getProperty("user.dir") + "recording.mp3"
-        println(output)
-
-        mediaRecorder = MediaRecorder()
-
-        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        mediaRecorder?.setOutputFile(getDate() + ".mp3")
-
-    }
-
-    private fun stopRecording() {
-        mediaRecorder?.stop()
-        mediaRecorder?.release()
-        Toast.makeText(this, "Manikenki!", Toast.LENGTH_SHORT).show()
-//        if(state){
-//            state = false
-//        }else{
-//            Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
-//        }
-    }
-
     private fun startRecord() {
 
         try {
-
             file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
 //            file = File(getRecordingDir() + File.separator + "test" + ".mp3")
             file.createNewFile()
@@ -159,11 +114,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermisions(): Boolean {
+    private fun stopRecording() {
+        mediaRecorder?.stop()
+        mediaRecorder?.release()
+        Toast.makeText(this, "Record saved!", Toast.LENGTH_SHORT).show()
+//        if(state){
+//            state = false
+//        }else{
+//            Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
+//        }
+    }
 
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+    private fun startPlay() {
+        //TODO: play last record
+
+        player = MediaPlayer ()
+
+//        player?.setOnCompletionListener (this)
+
+        try {
+//            file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
+            file = File(getRecordingDir() + File.separator + "test" + ".mp3")
+            player?.setDataSource(file.absolutePath)
+        } catch (e: IOException) {
+            println(e)
+        }
+
+        try {
+            player?.prepare ()
+        } catch (e: IOException) {
+            println(e)
+        }
+
+        player?.start()
 
     }
+
+    private fun setupMediaRecorder() {
+
+        mediaRecorder = MediaRecorder()
+
+        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        mediaRecorder?.setOutputFile(getDate() + ".mp3")
+
+    }
+
 }

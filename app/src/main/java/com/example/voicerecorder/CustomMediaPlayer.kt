@@ -33,6 +33,8 @@ fun startPlay(path : String) {
     }
 
     player.start()
+}
 
-//        tv1.text = "Ready to play"
+fun stopPlayer(){
+    player.stop()
 }
