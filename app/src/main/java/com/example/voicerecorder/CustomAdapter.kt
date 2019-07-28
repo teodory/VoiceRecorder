@@ -3,7 +3,9 @@ package com.example.voicerecorder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -21,12 +23,17 @@ class CustomAdapter(var records: List<Record>) : RecyclerView.Adapter<CustomAdap
 
     override fun onBindViewHolder(holder: CustomAdapter.ViewHolder, position: Int) {
         val record : Record = records[position]
-        holder.title.text = record.title
-//        holder.description.text = movie.year.toString()
+        holder.title.text = record.name
+
+        holder.playButton.setOnClickListener{
+            startPlay(record.title)
+        }
     }
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val title = itemView.findViewById<TextView>(R.id.list_title)
+        var playButton = itemView.findViewById<Button>(R.id.myPlayRecord)
 //        val description = itemView.findViewById<TextView>(R.id.list_description)
+
     }
 }

@@ -44,7 +44,7 @@ fun getAllRecords() : List<Record>{
 
             val recName = generateName(it.nameWithoutExtension)
             if(recName != null){
-                allRecords.add(Record(name = recName, title = recName, year = 0))
+                allRecords.add(Record(name = recName, title = it.absolutePath, year = 0))
             }
         }
 
@@ -54,22 +54,17 @@ fun getAllRecords() : List<Record>{
 }
 
 fun generateName(name: String): String? {
-//        2019_06_28-05h15m01s
     val nameRegex = Regex("(\\d{4})_(\\d{2})_(\\d{2})-(\\d{2})h(\\d{2})m(\\d{2})s")
-//"""(\w+?)(?<num>\d+)""".toRegex().matchEntire("area51")!!.groups["num"]!!.value
+
     val matches = nameRegex.matchEntire(name)
     if (matches != null) {
-        print(matches.groups[1]?.value)
-        var str = String.format("Rec %s-%s-%s %s:%s.%s",
+        return String.format("Rec %s-%s-%s %s:%s.%s",
             matches.groups[1]?.value,
             matches.groups[2]?.value,
             matches.groups[3]?.value,
             matches.groups[4]?.value,
             matches.groups[5]?.value,
             matches.groups[6]?.value)
-
-        println("----------" + str)
-        return str
     }
     return null
 }
