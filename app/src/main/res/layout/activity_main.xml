@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Voice Recorder"
+            android:id="@+id/textView"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/view_my_list_button" android:layout_marginBottom="224dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/play_record"
+            app:layout_constraintStart_toStartOf="parent"/>
+    <Button
+            android:text="Records List"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_my_list_button"
+            app:layout_constraintTop_toBottomOf="@+id/stop_record"
+            android:layout_marginBottom="32dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/textView" app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+            android:text="Start Record"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_record"
+            android:layout_marginTop="20dp" android:layout_marginBottom="52dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/stop_record"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+            android:enabled="false"
+            android:text="Stop Record"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/stop_record"
+            app:layout_constraintTop_toBottomOf="@+id/start_record"
+            android:layout_marginBottom="109dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_my_list_button"
+            app:layout_constraintStart_toStartOf="parent"/>
+    <Button
+            android:elevation="2dp"
+            android:text="PLAY"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/play_record"
+            app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/stop_play_record" app:layout_constraintStart_toStartOf="parent"/>
+    <Button
+            android:text="Stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/stop_play_record"
+            app:layout_constraintTop_toBottomOf="@+id/play_record"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/guideline"
+            app:layout_constraintGuide_begin="20dp"
+
+            android:orientation="horizontal"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
