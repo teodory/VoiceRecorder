@@ -32,7 +32,7 @@ fun getRecordingDir() : String{
 }
 
 
-fun getAllRecords() : List<Record>{
+fun getAllRecords() : ArrayList<Record> {
     var allRecords = ArrayList<Record>()
 
     var recordsDir = File(getRecordingDir())
@@ -65,6 +65,13 @@ fun generateName(name: String): String? {
             matches.groups[6]?.value)
     }
     return null
+}
+
+fun deleteRecord(path: String) {
+    var file = File(path)
+    if (file.exists()){
+        file.delete()
+    }
 }
 
 
