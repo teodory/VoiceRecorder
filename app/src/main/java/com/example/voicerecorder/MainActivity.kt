@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private var output: String? = null
     private var mediaRecorder: MediaRecorder? = null
-    private var player: MediaPlayer? = null
+//    private var player: MediaPlayer? = null
     private lateinit var file: File
 //    private var state: Boolean = false
 //    private var recordingStopped: Boolean = false
@@ -52,11 +52,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonPlay.setOnClickListener{
-            startPlay()
+            val allRec = getAllRecords()
+            val last_record = allRec.get(allRec.size - 1)
+            startPlay(last_record.path)
         }
 
         buttonStopPlayRec.setOnClickListener{
-            player?.stop()
+//            player?.stop()
+            stopPlayer()
         }
 
         if(!checkPermisions()){
@@ -125,30 +128,6 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
-    private fun startPlay() {
-        //TODO: play last record
-
-        player = MediaPlayer ()
-
-//        player?.setOnCompletionListener (this)
-
-        try {
-//            file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
-            file = File(getRecordingDir() + File.separator + "test" + ".mp3")
-            player?.setDataSource(file.absolutePath)
-        } catch (e: IOException) {
-            println(e)
-        }
-
-        try {
-            player?.prepare ()
-        } catch (e: IOException) {
-            println(e)
-        }
-
-        player?.start()
-
-    }
 
     private fun setupMediaRecorder() {
 

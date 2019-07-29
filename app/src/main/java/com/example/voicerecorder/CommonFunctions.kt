@@ -48,7 +48,14 @@ fun getAllRecords() : ArrayList<Record> {
         }
     }
 
-    return allRecords
+
+    var result = ArrayList<Record>()
+    allRecords.sortedBy { it.name }.forEach {
+        result.add(it)
+    }
+
+//    return allRecords
+    return result
 }
 
 fun generateName(name: String): String? {

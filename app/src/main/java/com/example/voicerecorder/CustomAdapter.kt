@@ -1,5 +1,6 @@
 package com.example.voicerecorder
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,13 +34,16 @@ class CustomAdapter(var records: ArrayList<Record>) : RecyclerView.Adapter<Custo
         }
 
         holder.deleteButton.setOnClickListener{
+//            TODO: if
             deleteRecord(record.path)
             records.removeAt(position)
             notifyItemRemoved(position)
-//                        fun removeAt(position: Int) {
-//        items.removeAt(position)
-//        notifyItemRemoved(position)
-//    }
+//
+//            val intent = Intent()
+//            intent.action = Intent.ACTION_SEND
+//            intent.putExtra(Intent.EXTRA_TEXT, "dddd")
+//            intent.type = "text/plain"
+
         }
     }
 
