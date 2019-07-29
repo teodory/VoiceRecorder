@@ -2,7 +2,7 @@ package com.example.voicerecorder
 
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 var RECORD_EXTENSION = "mp3"
 
@@ -32,32 +32,6 @@ fun getRecordingDir() : String{
 }
 
 
-fun getAllRecords() : ArrayList<Record> {
-    var allRecords = ArrayList<Record>()
-
-    var recordsDir = File(getRecordingDir())
-
-    recordsDir.walkTopDown().forEach {
-
-        if(it.extension == RECORD_EXTENSION){
-
-            val recName = generateName(it.nameWithoutExtension)
-            if(recName != null){
-                allRecords.add(Record(name = recName, path = it.absolutePath))
-            }
-        }
-    }
-
-
-    var result = ArrayList<Record>()
-    allRecords.sortedBy { it.name }.forEach {
-        result.add(it)
-    }
-
-//    return allRecords
-    return result
-}
-
 fun generateName(name: String): String? {
     val nameRegex = Regex("(\\d{4})_(\\d{2})_(\\d{2})-(\\d{2})h(\\d{2})m(\\d{2})s")
 
@@ -72,13 +46,6 @@ fun generateName(name: String): String? {
             matches.groups[6]?.value)
     }
     return null
-}
-
-fun deleteRecord(path: String) {
-    var file = File(path)
-    if (file.exists()){
-        file.delete()
-    }
 }
 
 

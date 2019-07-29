@@ -17,12 +17,8 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    private var output: String? = null
     private var mediaRecorder: MediaRecorder? = null
-//    private var player: MediaPlayer? = null
     private lateinit var file: File
-//    private var state: Boolean = false
-//    private var recordingStopped: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,13 +48,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonPlay.setOnClickListener{
-            val allRec = getAllRecords()
-            val last_record = allRec.get(allRec.size - 1)
-            startPlay(last_record.path)
+
+            startPlay(getLastRecord().path)
         }
 
         buttonStopPlayRec.setOnClickListener{
-//            player?.stop()
             stopPlayer()
         }
 
@@ -121,23 +115,6 @@ class MainActivity : AppCompatActivity() {
         mediaRecorder?.stop()
         mediaRecorder?.release()
         Toast.makeText(this, "Record saved!", Toast.LENGTH_SHORT).show()
-//        if(state){
-//            state = false
-//        }else{
-//            Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
-//        }
-    }
-
-
-    private fun setupMediaRecorder() {
-
-        mediaRecorder = MediaRecorder()
-
-        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        mediaRecorder?.setOutputFile(getDate() + ".mp3")
-
     }
 
 }

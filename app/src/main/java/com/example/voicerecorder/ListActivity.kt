@@ -28,11 +28,9 @@ class ListActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.my_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-//        val adapter = CustomAdapter(myDataset)
         val adapter = CustomAdapter(getAllRecords())
         recyclerView.adapter = adapter
 
-//        setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
