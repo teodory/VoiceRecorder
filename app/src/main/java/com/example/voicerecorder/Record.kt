@@ -7,9 +7,9 @@ data class Record(val name : String, val path: String)
 
 
 fun getAllRecords() : ArrayList<Record> {
-    var allRecords = ArrayList<Record>()
+    val allRecords = ArrayList<Record>()
 
-    var recordsDir = File(getRecordingDir())
+    val recordsDir = File(getRecordingDir())
 
     recordsDir.walkTopDown().sortedByDescending { it.name }.forEach {
 
@@ -32,9 +32,11 @@ fun getLastRecord() : Record{
 }
 
 
-fun deleteRecord(path: String) {
-    var file = File(path)
+fun deleteRecord(path: String): Boolean {
+    val file = File(path)
     if (file.exists()){
         file.delete()
+        return true
     }
+    return false
 }

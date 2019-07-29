@@ -46,7 +46,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
     <Button
             android:elevation="2dp"
-            android:text="PLAY"
+            android:text="PLAY LAST RECORD"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/play_record"

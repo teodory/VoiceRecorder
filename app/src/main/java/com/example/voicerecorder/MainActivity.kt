@@ -1,10 +1,10 @@
 package com.example.voicerecorder
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
-import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -19,10 +19,12 @@ class MainActivity : AppCompatActivity() {
 
     private var mediaRecorder: MediaRecorder? = null
     private lateinit var file: File
+    private lateinit var appContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        appContext = applicationContext
 
         var buttonList = findViewById<Button>(R.id.view_my_list_button)
         var buttonStopRecord = findViewById<Button>(R.id.stop_record)
@@ -64,6 +66,10 @@ class MainActivity : AppCompatActivity() {
 //        println(path)
 //        testFileWriting()
 //        testReadingFiles()
+    }
+
+    fun getAppContext() : Context{
+        return appContext
     }
 
     private fun checkPermisions(): Boolean {

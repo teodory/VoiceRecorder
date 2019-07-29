@@ -1,10 +1,11 @@
 package com.example.voicerecorder
 
 import java.io.File
+import java.security.AccessController.getContext
 import java.util.*
 
 
-var RECORD_EXTENSION = "mp3"
+const val RECORD_EXTENSION = "mp3"
 
 
 fun getDate(): String {
@@ -22,10 +23,12 @@ fun getDate(): String {
 
 fun getRecordingDir() : String{
 
-    var baseDir = "/storage/emulated/0/Music/MyRecords"
-    var recordingDir = File(baseDir)
+//    val baseDir = "/storage/emulated/0/Music/MyRecords"
+//    val baseDir = context.filesDir.toString() + "/MyRecords"
+    val baseDir = "/data/user/0/com.example.voicerecorder/MyRecords"
+    val recordingDir = File(baseDir)
     if (!recordingDir.exists()){
-        recordingDir.mkdirs()
+        recordingDir.mkdir()
     }
 
     return recordingDir.absolutePath
@@ -51,16 +54,21 @@ fun generateName(name: String): String? {
 
 fun testReadingFiles(){
     println("-------- IN TEST READING --------")
-    var file = File(getRecordingDir())
+
+    val file = File(getRecordingDir())
+    println( "" + file.exists() + " " + file)
+    println("" + file.isDirectory + "   " + file.isFile)
 
     file.walkTopDown().forEach {
-
-        println(it)
-        println(it.extension)
-        println(it.nameWithoutExtension)
+        println("---" + it)
     }
 
-
+//    file.walkTopDown().forEach {
+//
+//        println(it)
+//        println(it.extension)
+//        println(it.nameWithoutExtension)
+//    }
     println("-------- EXIT TEST READING --------")
 
 }
@@ -70,21 +78,21 @@ fun testFileWriting() {
     println("\n\nIN TEST\n\n")
 
 //        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath()
-//        var baseDir = Environment.getDataDirectory().absolutePath
-//        var baseDir = "/storage/emulated/0/Seba/"
-    var baseDir = "/storage/emulated/0/Music/MyRecords"
-    var recordingDir = File(baseDir)
+//        val baseDir = Environment.getDataDirectory().absolutePath
+//        val baseDir = "/storage/emulated/0/Seba/"
+    val baseDir = "/storage/emulated/0/Music/MyRecords"
+    val recordingDir = File(baseDir)
     if (!recordingDir.exists()){
         recordingDir.mkdirs()
     }
-    var fileName = "myFile" + getDate() + ".txt"
+    val fileName = "myFile" + getDate() + ".txt"
 
 // Not sure if the / is on the path or not
-    var f = File(baseDir + File.separator + fileName)
-//        var f = File(baseDir)
-    File(baseDir).listFiles().forEach {
-        println(it)
-    }
+    val f = File(baseDir + File.separator + fileName)
+//        val f = File(baseDir)
+//    File(baseDir).listFiles().forEach {
+//        println(it)
+//    }
 
 //        f.walkTopDown().forEach {
 //            println(it)
