@@ -24,13 +24,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        appContext = applicationContext
+        this.appContext = applicationContext
 
-        var buttonList = findViewById<Button>(R.id.view_my_list_button)
-        var buttonStopRecord = findViewById<Button>(R.id.stop_record)
-        var buttonStartRecord = findViewById<Button>(R.id.start_record)
-        var buttonPlay = findViewById<Button>(R.id.play_record)
-        var buttonStopPlayRec = findViewById<Button>(R.id.stop_play_record)
+        if(!checkPermisions()){
+            getPermisions()
+        }
+
+        val buttonList = findViewById<Button>(R.id.view_my_list_button)
+        val buttonStopRecord = findViewById<Button>(R.id.stop_record)
+        val buttonStartRecord = findViewById<Button>(R.id.start_record)
+        val buttonPlay = findViewById<Button>(R.id.play_record)
+        val buttonStopPlayRec = findViewById<Button>(R.id.stop_play_record)
 
         buttonList.setOnClickListener {
             val intent = Intent(this, ListActivity::class.java)
@@ -38,9 +42,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonStartRecord.setOnClickListener{
-            if(!checkPermisions()){
+            if(checkPermisions()){
                 startRecord()
                 buttonStopRecord.setEnabled(true)
+            }else{
+                Toast.makeText(this, "Permissions required!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -58,9 +64,6 @@ class MainActivity : AppCompatActivity() {
             stopPlayer()
         }
 
-        if(!checkPermisions()){
-            getPermisions()
-        }
 
 //        val path = System.getProperty("user.dir")
 //        println(path)
@@ -74,10 +77,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkPermisions(): Boolean {
 
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
     }
 
     private fun getPermisions() {
