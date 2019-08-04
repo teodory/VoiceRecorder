@@ -1,5 +1,6 @@
 package com.example.voicerecorder
 
+import android.content.Context
 import java.io.File
 import java.security.AccessController.getContext
 import java.util.*
@@ -21,11 +22,10 @@ fun getDate(): String {
     )
 }
 
-fun getRecordingDir() : String{
+fun getRecordingDir(context: Context) : String{
+//    val baseDir = "/data/user/0/com.example.voicerecorder/files/records"
+    val baseDir = context.filesDir.absolutePath + "/records"
 
-//    val baseDir = "/storage/emulated/0/Music/MyRecords"
-//    val baseDir = context.filesDir.toString() + "/MyRecords"
-    val baseDir = "/data/user/0/com.example.voicerecorder/MyRecords"
     val recordingDir = File(baseDir)
     if (!recordingDir.exists()){
         recordingDir.mkdir()
@@ -55,7 +55,9 @@ fun generateName(name: String): String? {
 fun testReadingFiles(){
     println("-------- IN TEST READING --------")
 
-    val file = File(getRecordingDir())
+//    val file = File(getRecordingDir())
+    val file = File("/data/user/0/com.example.voicerecorder/files/records")
+
     println( "" + file.exists() + " " + file)
     println("" + file.isDirectory + "   " + file.isFile)
 

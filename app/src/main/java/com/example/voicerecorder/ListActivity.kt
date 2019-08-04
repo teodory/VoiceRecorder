@@ -28,7 +28,7 @@ class ListActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.my_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter = CustomAdapter(getAllRecords())
+        val adapter = CustomAdapter(getAllRecords(applicationContext), applicationContext)
         recyclerView.adapter = adapter
 
 

@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonPlay.setOnClickListener{
 
-            startPlay(getLastRecord().path)
+            startPlay(getLastRecord(appContext).path)
         }
 
         buttonStopPlayRec.setOnClickListener{
@@ -69,10 +69,6 @@ class MainActivity : AppCompatActivity() {
 //        println(path)
 //        testFileWriting()
 //        testReadingFiles()
-    }
-
-    fun getAppContext() : Context{
-        return appContext
     }
 
     private fun checkPermisions(): Boolean {
@@ -94,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     private fun startRecord() {
 
         try {
-            file = File(getRecordingDir() + File.separator + getDate() + ".mp3")
+            file = File(getRecordingDir(appContext) + File.separator + getDate() + ".mp3")
 //            file = File(getRecordingDir() + File.separator + "test" + ".mp3")
             file.createNewFile()
 

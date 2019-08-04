@@ -1,15 +1,16 @@
 package com.example.voicerecorder
 
+import android.content.Context
 import java.io.File
 
 
 data class Record(val name : String, val path: String)
 
 
-fun getAllRecords() : ArrayList<Record> {
+fun getAllRecords(context: Context) : ArrayList<Record> {
     val allRecords = ArrayList<Record>()
 
-    val recordsDir = File(getRecordingDir())
+    val recordsDir = File(getRecordingDir(context))
 
     recordsDir.walkTopDown().sortedByDescending { it.name }.forEach {
 
@@ -26,9 +27,9 @@ fun getAllRecords() : ArrayList<Record> {
 }
 
 
-fun getLastRecord() : Record{
+fun getLastRecord(context: Context) : Record{
 
-    return getAllRecords().first()
+    return getAllRecords(context).first()
 }
 
 
