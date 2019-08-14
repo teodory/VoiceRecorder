@@ -8,6 +8,7 @@ import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,6 +19,7 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     private var mediaRecorder: MediaRecorder? = null
+    private lateinit var mediaPlayer: CustomMediaPlayer
     private lateinit var file: File
     private lateinit var appContext: Context
 
@@ -30,11 +32,16 @@ class MainActivity : AppCompatActivity() {
             getPermisions()
         }
 
+
         val buttonList = findViewById<Button>(R.id.view_my_list_button)
         val buttonStopRecord = findViewById<Button>(R.id.stop_record)
         val buttonStartRecord = findViewById<Button>(R.id.start_record)
         val buttonPlay = findViewById<Button>(R.id.play_record)
         val buttonStopPlayRec = findViewById<Button>(R.id.stop_play_record)
+
+        val simpleSeekBar = findViewById<SeekBar>(R.id.simpleSeekBar)
+
+        mediaPlayer = CustomMediaPlayer(simpleSeekBar)
 
         buttonList.setOnClickListener {
             val intent = Intent(this, ListActivity::class.java)
@@ -57,11 +64,13 @@ class MainActivity : AppCompatActivity() {
 
         buttonPlay.setOnClickListener{
 
-            startPlay(getLastRecord(appContext).path)
+//            startPlay(getLastRecord(appContext).path)
+//            startPlay(getLastRecord(appContext).path, simpleSeekBar)
+            this.mediaPlayer.startPlay(getLastRecord(appContext).path)
         }
 
         buttonStopPlayRec.setOnClickListener{
-            stopPlayer()
+            this.mediaPlayer.stopPlayer()
         }
 
 
@@ -69,6 +78,20 @@ class MainActivity : AppCompatActivity() {
 //        println(path)
 //        testFileWriting()
 //        testReadingFiles()
+
+
+////    /data/user/0/com.example.voicerecorder/MyRecords/2019_06_30-08h34m20s.mp3
+////    /data/user/0/com.example.voicerecorder/MyRecords/2019_06_30-08h43m47s.mp3
+//        val f1 = File("/data/user/0/com.example.voicerecorder/MyRecords/2019_08_19-08h50m59s.mp3")
+//        val f2 = File("/data/user/0/com.example.voicerecorder/MyRecords")
+////        println(appContext.filesDir.absolutePath + File.separator)
+////        println(f1.path)
+//        println(getLastRecord(appContext))
+//        println("******")
+//        println(f2.walkTopDown().forEach { println(it) })
+//        println(f1.exists())
+//        println(f2.exists())
+
     }
 
     private fun checkPermisions(): Boolean {
@@ -113,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-    }
+}
 
     private fun stopRecording() {
         mediaRecorder?.stop()

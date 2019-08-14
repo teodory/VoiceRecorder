@@ -28,7 +28,7 @@ fun getAllRecords(context: Context) : ArrayList<Record> {
 
 
 fun getLastRecord(context: Context) : Record{
-
+    println(getAllRecords(context))
     return getAllRecords(context).first()
 }
 
