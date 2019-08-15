@@ -5,48 +5,60 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#787676"
         tools:context=".MainActivity">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="407dp"
+            android:layout_height="55dp"
             android:text="Voice Recorder"
+            android:visibility="invisible"
             android:id="@+id/textView"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@+id/view_my_list_button" android:layout_marginBottom="224dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/play_record"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="2dp"
+            android:freezesText="false"
+            tools:ignore="MissingConstraints" tools:layout_editor_absoluteY="548dp"/>
 
-    <Button
+    <ImageButton
             android:text="Records List"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="69dp"
+            android:layout_height="60dp"
             android:id="@+id/view_my_list_button"
-            app:layout_constraintTop_toBottomOf="@+id/stop_record"
-            android:layout_marginBottom="32dp"
+            android:src="@drawable/round_playlist_play_black_48"
+            android:background="#787676"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="parent"/>
+            tools:layout_editor_absoluteY="38dp"
+            tools:ignore="MissingConstraints"/>
 
-    <Button
+    <ImageButton
             android:text="Start Record"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="168dp"
+            android:layout_height="109dp"
             android:id="@+id/start_record"
-            android:layout_marginTop="20dp" android:layout_marginBottom="52dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/stop_record"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_marginTop="128dp"
+            android:src="@drawable/round_mic_black_48dp"
+            android:background="#787676"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"/>
+    <!--app:layout_constraintBottom_toTopOf="@+id/stop_record"-->
 
-    <Button
+
+    <ImageButton
             android:enabled="false"
+            android:visibility="invisible"
             android:text="Stop Record"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="168dp"
+            android:layout_height="109dp"
             android:id="@+id/stop_record"
-            app:layout_constraintTop_toBottomOf="@+id/start_record"
-            android:layout_marginBottom="109dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/view_my_list_button"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_marginTop="128dp"
+            android:src="@drawable/round_mic_off_black_48dp"
+            android:background="#787676"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"/>
 
     <SeekBar
             android:id="@+id/simpleSeekBar"
@@ -54,32 +66,39 @@
             android:layout_height="wrap_content"
             android:max="100"
             tools:ignore="MissingConstraints"
-            android:background="@color/colorPrimary"
-            tools:layout_editor_absoluteX="-16dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/play_record"/>
+            android:background="#1E1E24"
+            tools:layout_editor_absoluteX="2dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <Button
+    <ImageButton
             android:elevation="2dp"
             android:text="PLAY LAST RECORD"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="66dp"
+            android:layout_height="46dp"
             android:id="@+id/play_record"
-            app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/stop_play_record" app:layout_constraintStart_toStartOf="parent"/>
-    <Button
+            android:src="@drawable/baseline_play_arrow_black_24"
+            android:background="#787676"
+            app:layout_constraintBottom_toTopOf="@id/simpleSeekBar"
+            tools:layout_editor_absoluteX="0dp"/>
+    <ImageButton
             android:text="Stop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="66dp"
+            android:layout_height="46dp"
             android:id="@+id/stop_play_record"
-            app:layout_constraintTop_toBottomOf="@+id/play_record"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:src="@drawable/round_stop_black_24"
+            android:background="#787676"
+            tools:layout_editor_absoluteY="664dp"
+            app:layout_constraintStart_toEndOf="@+id/play_record"
+            app:layout_constraintBottom_toTopOf="@id/simpleSeekBar"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"/>
+
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:id="@+id/guideline"
-            app:layout_constraintGuide_begin="20dp"
+            app:layout_constraintGuide_begin="36dp"
 
             android:orientation="horizontal"/>
 

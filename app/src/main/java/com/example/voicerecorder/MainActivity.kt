@@ -8,10 +8,12 @@ import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import java.io.IOException
 import java.io.File
 
@@ -33,11 +35,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val buttonList = findViewById<Button>(R.id.view_my_list_button)
-        val buttonStopRecord = findViewById<Button>(R.id.stop_record)
-        val buttonStartRecord = findViewById<Button>(R.id.start_record)
-        val buttonPlay = findViewById<Button>(R.id.play_record)
-        val buttonStopPlayRec = findViewById<Button>(R.id.stop_play_record)
+        val buttonList = findViewById<ImageButton>(R.id.view_my_list_button)
+        val buttonStartRecord = findViewById<ImageButton>(R.id.start_record)
+        val buttonStopRecord = findViewById<ImageButton>(R.id.stop_record)
+        val buttonPlay = findViewById<ImageButton>(R.id.play_record)
+        val buttonStopPlayRec = findViewById<ImageButton>(R.id.stop_play_record)
 
         val simpleSeekBar = findViewById<SeekBar>(R.id.simpleSeekBar)
 
@@ -51,7 +53,11 @@ class MainActivity : AppCompatActivity() {
         buttonStartRecord.setOnClickListener{
             if(checkPermisions()){
                 startRecord()
-                buttonStopRecord.setEnabled(true)
+                buttonStopRecord.isEnabled = true
+                buttonStopRecord.isVisible = true
+
+                buttonStartRecord.isEnabled = false
+                buttonStartRecord.isVisible = false
             }else{
                 Toast.makeText(this, "Permissions required!", Toast.LENGTH_SHORT).show()
             }
@@ -59,7 +65,12 @@ class MainActivity : AppCompatActivity() {
 
         buttonStopRecord.setOnClickListener{
             stopRecording()
-            buttonStopRecord.setEnabled(false)
+
+            buttonStopRecord.isEnabled = false
+            buttonStopRecord.isVisible = false
+
+            buttonStartRecord.isEnabled = true
+            buttonStartRecord.isVisible = true
         }
 
         buttonPlay.setOnClickListener{
