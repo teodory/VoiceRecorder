@@ -7,10 +7,9 @@ import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.SeekBar
-import android.widget.Toast
+import android.util.Log
+import android.view.View
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -24,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mediaPlayer: CustomMediaPlayer
     private lateinit var file: File
     private lateinit var appContext: Context
+    private lateinit var popupWindow: PopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +34,12 @@ class MainActivity : AppCompatActivity() {
             getPermisions()
         }
 
-
         val buttonList = findViewById<ImageButton>(R.id.view_my_list_button)
         val buttonStartRecord = findViewById<ImageButton>(R.id.start_record)
         val buttonStopRecord = findViewById<ImageButton>(R.id.stop_record)
         val buttonPlay = findViewById<ImageButton>(R.id.play_record)
-        val buttonStopPlayRec = findViewById<ImageButton>(R.id.stop_play_record)
 
-        val simpleSeekBar = findViewById<SeekBar>(R.id.simpleSeekBar)
-
-        mediaPlayer = CustomMediaPlayer(simpleSeekBar)
+        mediaPlayer = CustomMediaPlayer(this)
 
         buttonList.setOnClickListener {
             val intent = Intent(this, ListActivity::class.java)
@@ -74,35 +70,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonPlay.setOnClickListener{
-
 //            startPlay(getLastRecord(appContext).path)
 //            startPlay(getLastRecord(appContext).path, simpleSeekBar)
-            this.mediaPlayer.startPlay(getLastRecord(appContext).path)
-        }
-
-        buttonStopPlayRec.setOnClickListener{
-            this.mediaPlayer.stopPlayer()
+            this.mediaPlayer.startPlay(getLastRecord(appContext), it, this)
         }
 
 
-//        val path = System.getProperty("user.dir")
-//        println(path)
-//        testFileWriting()
-//        testReadingFiles()
+        val intent = Intent(this, ListActivity::class.java)
 
-
-////    /data/user/0/com.example.voicerecorder/MyRecords/2019_06_30-08h34m20s.mp3
-////    /data/user/0/com.example.voicerecorder/MyRecords/2019_06_30-08h43m47s.mp3
-//        val f1 = File("/data/user/0/com.example.voicerecorder/MyRecords/2019_08_19-08h50m59s.mp3")
-//        val f2 = File("/data/user/0/com.example.voicerecorder/MyRecords")
-////        println(appContext.filesDir.absolutePath + File.separator)
-////        println(f1.path)
-//        println(getLastRecord(appContext))
-//        println("******")
-//        println(f2.walkTopDown().forEach { println(it) })
-//        println(f1.exists())
-//        println(f2.exists())
-
+        var constraintLayout = findViewById<View>(R.id.constraint_layout_id)
+        constraintLayout.setOnTouchListener(object : OnSwipeTouchListener() {
+            override fun onSwipeLeft() {
+                Log.e("ViewSwipe", "Left")
+                startActivity(intent)
+            }
+        })
     }
 
     private fun checkPermisions(): Boolean {

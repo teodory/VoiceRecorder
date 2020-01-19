@@ -1,22 +1,35 @@
 package com.example.voicerecorder
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.media.MediaPlayer
-import android.widget.SeekBar
+import android.view.Gravity
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.player_popup.*
 import java.io.File
 import java.io.IOException
 
 
 private var tmp_player = MediaPlayer()
 private lateinit var file: File
+//lateinit var popupWindow: PopupWindow
 
-
-class CustomMediaPlayer(private var seekBar: SeekBar) : Runnable {
+@SuppressLint("Registered")
+class CustomMediaPlayer(activity: Activity) : Runnable, AppCompatActivity() {
     private var player = MediaPlayer()
+    private lateinit var seekBar: SeekBar
+    private lateinit var popupWindow: PopupWindow
+
+
+//    companion object {
+//        val instance = CustomMediaPlayer()
+//    }
 
     override fun run() {
         var currentPosition = player.currentPosition
         val total = player.duration
-
 
         while (player.isPlaying && currentPosition < total) {
             try {
@@ -33,11 +46,52 @@ class CustomMediaPlayer(private var seekBar: SeekBar) : Runnable {
         }
     }
 
-    fun startPlay(path: String){
+    fun startPlay(record: Record, view: View, selfActivity: Activity){
+
+        if (::seekBar.isInitialized){
+            println(seekBar.isActivated)
+            println(seekBar.isFocused)
+            println(seekBar.progress)
+        }
+        if (::popupWindow.isInitialized && popupWindow.isShowing && !player.isPlaying){
+           popupWindow.dismiss()
+        }
+//                TODO: not to reload the window after click play
+
+        val playerPopupView = selfActivity.layoutInflater.inflate(R.layout.player_popup, null)
+        popupWindow = initialPopupWindow(playerPopupView, selfActivity)
+        popupWindow.showAsDropDown(view)
+//        setupPopupWindow(playerPopupView, selfActivity)
+
+
+        val playButton = playerPopupView.findViewById<ImageButton>(R.id.play_record_popup)
+        val stopButton = playerPopupView.findViewById<ImageButton>(R.id.stop_play_record_popup)
+        this.seekBar = playerPopupView.findViewById<SeekBar>(R.id.simpleSeekBar)
+
+        playButton.setOnClickListener{
+            this.startPlay(record, it, selfActivity)
+        }
+
+        stopButton.setOnClickListener{
+//            popupWindow.dismiss()
+            this.stopPlayer()
+        }
+
+
+//        if (!::popupWindow.isInitialized){
+////            println("INIT POPUP_WINDOW")
+////            popupWindow = initialPopupWindow(playerPopupView, selfActivity)
+//            setupPopupWindow(playerPopupView, selfActivity)
+//        }
+
+
+        val recordName = popupWindow.contentView.findViewById<TextView>(R.id.record_title)
+        recordName.text = record.name
+
         this.player.reset()
 
         try {
-            file = File(path)
+            file = File(record.path)
             player.setDataSource(file.path)
             player.prepare()
 
@@ -70,8 +124,10 @@ class CustomMediaPlayer(private var seekBar: SeekBar) : Runnable {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-//            Toast.makeText(applicationContext,"!IN onStopTrackingTouch", Toast.LENGTH_SHORT).show()
                 println("!IN onStopTrackingTouch")
+                if (!player.isPlaying){
+                    seekBar.progress = 0
+                }
             }
         })
 
@@ -80,78 +136,79 @@ class CustomMediaPlayer(private var seekBar: SeekBar) : Runnable {
     fun stopPlayer(){
         player.stop()
     }
-}
 
+    @SuppressLint("InflateParams")
+    fun testButton(testButton: Button, selfActivity: Activity) {
 
+        testButton.setOnClickListener{
 
-//    simpleSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-//
-//        override fun onProgressChanged(sb: SeekBar, progress: Int, b: Boolean) {
-//            // Display the current progress of SeekBar
-////                            text_view.text = "Progress : $i"
-//
-//            val percent = progress / sb.getMax().toDouble()
-//            val offset = sb.getThumbOffset()
-//            val seekWidth = sb.getWidth()
-//            val v = Math.round(percent * (seekWidth - 2 * offset)).toInt()
-//            println("================")
-//            println(v)
-//
-//            if (progress > 0 && player != null && !player.isPlaying()) {
-//                clearMediaPlayer()
-//                simpleSeekBar.progress = 0
+            val playerView = selfActivity.layoutInflater.inflate(R.layout.player_popup, null)
+            popupWindow = PopupWindow(selfActivity)
+            popupWindow.animationStyle = R.style.WindowSlideStyle
+            popupWindow.contentView = playerView
+            popupWindow.isOutsideTouchable = true
+            popupWindow.isTouchable = true
+
+            val x = playerView.left + popupWindow.width
+            val y = playerView.top + popupWindow.height
+            popupWindow.showAtLocation(playerView, Gravity.BOTTOM, x, y)
+
+            setupPopupWindow(playerView, selfActivity)
+
+//            imageView.setOnClickListener{
+//                popupWindow.dismiss()
 //            }
-//
-//        }
-//
-//        override fun onStartTrackingTouch(sb: SeekBar?) {
-//            // Do something
-////            Toast.makeText(applicationContext,"start tracking",Toast.LENGTH_SHORT).show()
-//            if (player != null && player.isPlaying()) {
-//                if (sb != null) {
-//                    println("*****"+ sb.progress)
-//                    player.seekTo(sb.progress)
-//                }
-//            }
-//        }
-//
-//        override fun onStopTrackingTouch(sb: SeekBar?) {
-//            // Do something
-////            Toast.makeText(applicationContext,"stop tracking",Toast.LENGTH_SHORT).show()
-//        }
-//
-//    })
-
-
-
-//private fun clearMediaPlayer() {
-//    player.stop()
-//    player.release()
-//}
-
-
-//TODO: delete
-fun startPlay(path: String) {
-
-    tmp_player.reset()
-
-    try {
-        file = File(path)
-        tmp_player.setDataSource(file.absolutePath)
-    } catch (e: IOException) {
-        println(e)
+            popupWindow.showAsDropDown(testButton)
+        }
     }
 
-    try {
-        tmp_player.prepare ()
-    } catch (e: IOException) {
+    private fun setupPopupWindow(popupView: View, selfActivity: Activity) {
 
-        println(e)
+//        val nameText = popupView.findViewById<TextView>(R.id.record_title)
+        val playButton = popupView.findViewById<ImageButton>(R.id.play_record_popup)
+        val stopButton = popupView.findViewById<ImageButton>(R.id.stop_play_record_popup)
+        val simpleSeekBar = popupView.findViewById<SeekBar>(R.id.simpleSeekBar)
+        seekBar = simpleSeekBar
+
+        println()
+        println(simpleSeekBar)
+        println(simpleSeekBar)
+        println(simpleSeekBar)
+        println(playButton)
+        println(stopButton)
+
+        val record = getLastRecord(selfActivity.applicationContext)
+//        nameText.text = record.name
+
+        playButton.setOnClickListener{
+            this.startPlay(record, it, selfActivity)
+        }
+
+        stopButton.setOnClickListener{
+            popupView
+            this.stopPlayer()
+        }
     }
 
-    tmp_player.start()
-}
+    private fun initialPopupWindow(playerPopupView: View, activity: Activity): PopupWindow {
 
-fun stopPlayer(){
-    tmp_player.stop()
+        popupWindow = PopupWindow(activity)
+        popupWindow.animationStyle = R.style.WindowSlideStyle
+        popupWindow.contentView = playerPopupView
+        popupWindow.isOutsideTouchable = true
+//        popupWindow.isTouchable = true
+
+        val x = playerPopupView.left + popupWindow.width
+        val y = playerPopupView.top + popupWindow.height
+        popupWindow.showAtLocation(playerPopupView, Gravity.BOTTOM, x, y)
+
+//        setupPopupWindow(playerView, activity)
+
+//            imageView.setOnClickListener{
+//                popupWindow.dismiss()
+//            }
+//        popupWindow.showAsDropDown(view)
+        return popupWindow
+    }
+
 }

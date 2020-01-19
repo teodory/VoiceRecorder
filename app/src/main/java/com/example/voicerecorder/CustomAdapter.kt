@@ -1,6 +1,7 @@
 package com.example.voicerecorder
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -18,9 +19,10 @@ import android.widget.PopupMenu
 import java.sql.DriverManager
 
 
-class CustomAdapter(var records: ArrayList<Record>, context: Context) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(){
+class CustomAdapter(var records: ArrayList<Record>, context: Context, private val selfActivity: Activity) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(){
 
     private val appContext = context
+    private val mediaPlayer = CustomMediaPlayer(ListActivity())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vh = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -32,20 +34,23 @@ class CustomAdapter(var records: ArrayList<Record>, context: Context) : Recycler
     }
 
     @SuppressLint("ResourceType")
-    override fun onBindViewHolder(holder: CustomAdapter. ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val record : Record = records[position]
         holder.title.text = record.name
 
         holder.playButton.setOnClickListener{
+            println("\nStart player" + record.path)
             println("Start player" + record.path)
             println("Start player" + record.path)
-            println("Start player" + record.path)
-            startPlay(record.path)
+//            startPlay(record.path)
+            mediaPlayer.startPlay(record, it, selfActivity)
         }
 
         holder.stopButton.setOnClickListener{
             println("STOP PLAYER")
-            stopPlayer()
+//            stopPlayer()
+            mediaPlayer.stopPlayer()
         }
 
         holder.myPopupMenu.setOnClickListener{
