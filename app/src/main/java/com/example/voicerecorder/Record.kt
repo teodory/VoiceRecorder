@@ -7,10 +7,11 @@ import java.io.File
 data class Record(val name : String, val path: String)
 
 
-fun getAllRecords(context: Context) : ArrayList<Record> {
+fun getAllRecords(filesDir: String) : ArrayList<Record> {
+
     val allRecords = ArrayList<Record>()
 
-    val recordsDir = File(getRecordingDir(context))
+    val recordsDir = File(getRecordingDir(filesDir))
 
     recordsDir.walkTopDown().sortedByDescending { it.name }.forEach {
 
@@ -26,14 +27,17 @@ fun getAllRecords(context: Context) : ArrayList<Record> {
     return allRecords
 }
 
+fun getRecordsCount (filesDir: String) : Int {
+    return getAllRecords(filesDir).size
+}
 
-fun getLastRecord(context: Context) : Record{
-    println(getAllRecords(context))
-    return getAllRecords(context).first()
+fun getLastRecord(filesDir: String) : Record {
+    println("\tRECORDS SIZE: " + getAllRecords(filesDir).size)
+    return getAllRecords(filesDir).first()
 }
 
 
-fun deleteRecord(path: String): Boolean {
+fun deleteFile(path: String): Boolean {
     val file = File(path)
     if (file.exists()){
         file.delete()

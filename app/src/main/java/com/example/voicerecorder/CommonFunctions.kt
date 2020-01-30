@@ -1,31 +1,25 @@
 package com.example.voicerecorder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import java.io.File
-import java.security.AccessController.getContext
+import java.text.SimpleDateFormat
 import java.util.*
 
 
 const val RECORD_EXTENSION = "mp3"
+@SuppressLint("SimpleDateFormat")
+var dateFormat = SimpleDateFormat("yyyy_MM_dd-HH'h'mm'm'ss's'")
 
 
 fun getDate(): String {
-    val t = Calendar.getInstance()
-
-    return String.format("%d_%02d_%02d-%02dh%02dm%02ds",
-        t.get(Calendar.YEAR),
-        t.get(Calendar.MONTH),
-        t.get(Calendar.DAY_OF_MONTH),
-        t.get(Calendar.HOUR),
-        t.get(Calendar.MINUTE),
-        t.get(Calendar.SECOND)
-    )
+    val time = Calendar.getInstance()
+    return dateFormat.format(time.time)
 }
 
-fun getRecordingDir(context: Context) : String{
-//    val baseDir = "/data/user/0/com.example.voicerecorder/files/records"
-    val baseDir = context.filesDir.absolutePath + "/records"
+fun getRecordingDir(filesDir: String) : String{
 
+    val baseDir = filesDir + File.separator + "records"
     val recordingDir = File(baseDir)
     if (!recordingDir.exists()){
         recordingDir.mkdir()
@@ -49,73 +43,4 @@ fun generateName(name: String): String? {
             matches.groups[6]?.value)
     }
     return null
-}
-
-
-fun testReadingFiles(){
-    println("-------- IN TEST READING --------")
-
-//    val file = File(getRecordingDir())
-    val file = File("/data/user/0/com.example.voicerecorder/files/records")
-
-    println( "" + file.exists() + " " + file)
-    println("" + file.isDirectory + "   " + file.isFile)
-
-    file.walkTopDown().forEach {
-        println("---" + it)
-    }
-
-//    file.walkTopDown().forEach {
-//
-//        println(it)
-//        println(it.extension)
-//        println(it.nameWithoutExtension)
-//    }
-    println("-------- EXIT TEST READING --------")
-
-}
-
-
-fun testFileWriting() {
-    println("\n\nIN TEST\n\n")
-
-//        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath()
-//        val baseDir = Environment.getDataDirectory().absolutePath
-//        val baseDir = "/storage/emulated/0/Seba/"
-    val baseDir = "/storage/emulated/0/Music/MyRecords"
-    val recordingDir = File(baseDir)
-    if (!recordingDir.exists()){
-        recordingDir.mkdirs()
-    }
-    val fileName = "myFile" + getDate() + ".txt"
-
-// Not sure if the / is on the path or not
-    val f = File(baseDir + File.separator + fileName)
-//        val f = File(baseDir)
-//    File(baseDir).listFiles().forEach {
-//        println(it)
-//    }
-
-//        f.walkTopDown().forEach {
-//            println(it)
-//        }
-
-//        f.writer("----- TEST -----")
-    println(f.absolutePath)
-    println(f.absoluteFile)
-    println(f.appendText("TEST"))
-
-    f.createNewFile()
-    println()
-//        f.write("----- TEST -----")
-//        f.flush()
-//        f.close()
-
-    println("================= END TEST ===============")
-
-//        File("").walkBottomUp().forEach {
-//            println(it)
-//        }
-
-
 }

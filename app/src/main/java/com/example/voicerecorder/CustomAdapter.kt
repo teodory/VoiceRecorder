@@ -16,17 +16,18 @@ import java.sql.DriverManager.println
 import java.util.*
 import androidx.core.content.FileProvider.getUriForFile
 import android.widget.PopupMenu
+import android.widget.Toast
 import java.sql.DriverManager
 
 
 class CustomAdapter(var records: ArrayList<Record>, context: Context, private val selfActivity: Activity) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(){
 
     private val appContext = context
-    private val mediaPlayer = CustomMediaPlayer(ListActivity())
+    private val mediaPlayer = CustomMediaPlayer()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val vh = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-        return ViewHolder(vh)
+        val viewHolder = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        return ViewHolder(viewHolder)
     }
 
     override fun getItemCount(): Int {
@@ -40,16 +41,12 @@ class CustomAdapter(var records: ArrayList<Record>, context: Context, private va
         holder.title.text = record.name
 
         holder.playButton.setOnClickListener{
-            println("\nStart player" + record.path)
-            println("Start player" + record.path)
-            println("Start player" + record.path)
-//            startPlay(record.path)
+            println("\nStart player: " + record.path)
             mediaPlayer.startPlay(record, it, selfActivity)
         }
 
         holder.stopButton.setOnClickListener{
             println("STOP PLAYER")
-//            stopPlayer()
             mediaPlayer.stopPlayer()
         }
 
@@ -62,10 +59,8 @@ class CustomAdapter(var records: ArrayList<Record>, context: Context, private va
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
 
                 when(item.itemId) {
-                    R.id.myShareButton ->
-                        shereRecord(record)
-                    R.id.myDeleteButton ->
-                        deleteRecord(record, position)
+                    R.id.myShareButton -> shareRecord(record)
+                    R.id.myDeleteButton -> deleteRecord(record, position)
                 }
                 true
             })
@@ -75,20 +70,18 @@ class CustomAdapter(var records: ArrayList<Record>, context: Context, private va
         }
     }
 
-    private fun shereRecord(record: Record) {
+    private fun shareRecord(record: Record) {
+        val newFile = File(record.path)
+        val contentUri = getUriForFile(appContext, "com.example.voicerecorder.myfileprovider", newFile)
+        val shareIntent = Intent.createChooser(Intent(), "Share Record")
 
-        val shareIntent = Intent()
-        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         shareIntent.action = Intent.ACTION_SEND
         shareIntent.type = "audio/*"
-
-        val newFile = File(record.path)
-        val contentUri = getUriForFile(appContext, "com.example.voicerecorder.myfileprovider", newFile)
-
         shareIntent.putExtra(Intent.EXTRA_STREAM,  contentUri)
 
-        appContext.startActivity(Intent.createChooser(shareIntent, "Share Record"))
+        appContext.startActivity(shareIntent)
     }
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -98,11 +91,19 @@ class CustomAdapter(var records: ArrayList<Record>, context: Context, private va
         val myPopupMenu = itemView.findViewById<ImageButton>(R.id.myPopupMenu)
     }
 
-    private fun deleteRecord(record: Record, position: Int){
+    fun deleteRecord(record: Record, position: Int) {
+        val msg = " >>>> " + record.name + " IND: " + position
+        Toast.makeText(appContext, msg, Toast.LENGTH_SHORT).show()
 
-        if (deleteRecord(record.path)){
-            records.removeAt(position)
+        if (deleteFile(record.path)) {
+
             notifyItemRemoved(position)
+            notifyItemRangeChanged(position, getRecordsCount(appContext.filesDir.absolutePath))
+            records.removeAt(position)
+            println(" >>> " + record.name + " Deleted!!!")
+        }
+        else {
+            Toast.makeText(appContext, "File Not Found!", Toast.LENGTH_SHORT).show()
         }
     }
 
